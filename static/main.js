@@ -13,7 +13,7 @@ var margin = {
     height = 270 - margin.top - margin.bottom;
 
 var x = d3.scale.linear().range([0, width]);
-var y = d3.scale.linear().domain([0, 2000]).range([height, 0]);
+var y = d3.scale.linear().range([height, 0]);
 
 var xAxis = d3.svg.axis().scale(x)
     .orient("bottom").ticks(5);
@@ -55,9 +55,9 @@ x.domain(d3.extent(sizeOfPackages, function(d) {
     return d[0];
 }));
 
-// y.domain([0, d3.max(sizeOfPackages, function(d) {
-//     return d[1];
-// })]);
+y.domain([0, d3.max(sizeOfPackages, function(d) {
+    return d[1];
+})]);
 
 // Add the valueline path.
 svg.append("path")
@@ -80,40 +80,26 @@ svg.append("g")
 
 // d3.selectAll('.card-action > a').on('click', function() {
 d3.select('video').on('play', function() {
-    // setInterval(function() {
-    //     update({
-    //         0: packages++,
-    //         1: Math.floor(Math.random() * 1000)
-    //     });
-    // }, 200);
-
-    socket.on('connect', function() {
-        console.log('package-arrived');
-    });
-
-    socket.on('package-arrived', function(data) {
-        if (packages % 10 == 0)
-            update({
-                0: packages++,
-                1: parseInt(data)
-            });
-        packages++;
-        console.log(data);
-    });
+    setInterval(function() {
+        update({
+            0: packages++,
+            1: Math.floor(Math.random() * 1000)
+        });
+    }, 200);
 });
 
 function update(new_item) {
 
     sizeOfPackages.shift();
-    sizeOfPackages.push();
+    sizeOfPackages.push(new_item);
 
     x.domain(d3.extent(sizeOfPackages, function(d) {
         return d[0];
 
     }));
-    // y.domain([0, d3.max(sizeOfPackages, function(d) {
-    //     return d[1];
-    // })]);
+    y.domain([0, d3.max(sizeOfPackages, function(d) {
+        return d[1];
+    })]);
 
     svg.select(".line").attr("d", valueline(sizeOfPackages));
     svg.select(".x.axis").call(xAxis);
