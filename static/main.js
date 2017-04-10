@@ -1,7 +1,5 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-
-
 // Set the dimensions of the canvas / graph
 var margin = {
         top: 30,
@@ -77,13 +75,17 @@ svg.append("g")
 
 // });
 
-
-// d3.selectAll('.card-action > a').on('click', function() {
+var videoSize = 3500000
+    // d3.selectAll('.card-action > a').on('click', function() {
 d3.select('video').on('play', function() {
-    setInterval(function() {
+    var interval = setInterval(function() {
+        var ps = 250 + Math.floor(Math.random() * 750)
+        videoSize -= ps;
+        if (videoSize == 0)
+        clearInterval(interval);
         update({
             0: packages++,
-            1: Math.floor(Math.random() * 1000)
+            1: ps
         });
     }, 200);
 });
