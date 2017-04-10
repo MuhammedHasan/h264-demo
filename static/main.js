@@ -75,14 +75,15 @@ svg.append("g")
 
 // });
 
-var videoSize = 3500000
+var videoSize = 7000000;
     // d3.selectAll('.card-action > a').on('click', function() {
 d3.select('video').on('play', function() {
     var interval = setInterval(function() {
-        var ps = 250 + Math.floor(Math.random() * 750)
-        videoSize -= ps;
-        if (videoSize == 0)
-        clearInterval(interval);
+        var ps = 20 + Math.floor(Math.random() * 20)
+        videoSize -= ps * 1000;
+        if (videoSize < 0)
+          ps = 0;
+        // clearInterval(interval);
         update({
             0: packages++,
             1: ps
